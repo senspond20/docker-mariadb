@@ -1,0 +1,21 @@
+
+version : '3'
+services:
+  senspi_mariadb:
+      image: mariadb:10.4.6
+      container_name : rpi_mariadb
+      env_file :
+        - .env
+      restart: always
+      command : ['mysqld','--character-set-server=utf8mb4','--collation-server=utf8mb4_unicode_ci','--skip-character-set-client-handshake']
+      environment:
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        - TZ=Asia/Seoul
+        - MYSQL_DATABASE=${MYSQL_DATABASE} 
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      volumes:
+        - ./docker/init_sql:/docker-entrypoint-initdb.
+        - ./docker/db_volumes:/var/lib/mysql  
+      ports:
+        - '3333:3306'
